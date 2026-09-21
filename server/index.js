@@ -85,17 +85,20 @@ app.use((err, req, res, _next) => {
   });
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(` 🚀 Indian Stock Intelligence Backend running on :${PORT}`);
-  console.log(` 🇮🇳 Market Hours: 09:15 - 15:30 IST (Mon - Fri)`);
-  console.log(` 🛡️  Policy: ZERO FAKE DATA & Strict Normalization`);
-  console.log(`=======================================================`);
-});
+let server;
+if (!process.env.VERCEL) {
+  server = app.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(` 🚀 Indian Stock Intelligence Backend running on :${PORT}`);
+    console.log(` 🇮🇳 Market Hours: 09:15 - 15:30 IST (Mon - Fri)`);
+    console.log(` 🛡️  Policy: ZERO FAKE DATA & Strict Normalization`);
+    console.log(`=======================================================`);
+  });
 
-server.on('error', (err) => {
-  console.error(`[Server Listen Error] Port ${PORT} error:`, err.message);
-});
+  server.on('error', (err) => {
+    console.error(`[Server Listen Error] Port ${PORT} error:`, err.message);
+  });
+}
 
 export default app;
 export { server };
