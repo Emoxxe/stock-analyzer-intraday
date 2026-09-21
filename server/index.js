@@ -13,10 +13,17 @@ import searchRoutes from './routes/searchRoutes.js';
 import systemRoutes from './routes/systemRoutes.js';
 import intradayRoutes from './routes/intradayRoutes.js';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '../dist');
+
 const app = express();
-const PORT = process.env.SERVER_PORT || 5001;
+const PORT = process.env.PORT || process.env.SERVER_PORT || 5001;
 
 // Middleware
 app.use(cors());
@@ -33,6 +40,9 @@ if (process.env.NODE_ENV !== 'test') {
     next();
   });
 }
+
+// Serve static frontend assets from Vite build in production
+app.use(express.static(distPath));
 
 // API Routes
 app.use('/api/company', companyRoutes);
@@ -51,13 +61,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Global 404 Handler
-app.use((req, res) => {
+// 404 handler for unknown API routes
+app.use('/api', (req, res) => {
   res.status(404).json({
     success: false,
-    error: `Route ${req.method} ${req.originalUrl} not found`,
+    error: `API route ${req.method} ${req.originalUrl} not found`,
     quality: 'UNAVAILABLE',
   });
+});
+
+// Single Page Application (SPA) fallback to index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // Global Error Handler
