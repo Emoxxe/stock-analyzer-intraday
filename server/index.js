@@ -41,8 +41,19 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
-// Serve static frontend assets from Vite build in production
-app.use(express.static(distPath));
+// Normalize URL for Vercel serverless proxying
+app.use((req, res, next) => {
+  if (req.query?.__path) {
+    const subpath = req.query.__path;
+    const urlObj = new URL(req.url, 'http://localhost');
+    urlObj.searchParams.delete('__path');
+    const search = urlObj.search;
+    req.url = '/api/' + subpath + search;
+  } else if (!req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
 
 // API Routes
 app.use('/api/company', companyRoutes);
@@ -70,10 +81,15 @@ app.use('/api', (req, res) => {
   });
 });
 
-// Single Page Application (SPA) fallback to index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
-});
+// Only serve static frontend assets when running standalone (Vercel CDN handles this directly)
+if (!process.env.VERCEL) {
+  app.use(express.static(distPath));
+
+  // Single Page Application (SPA) fallback to index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, _next) => {

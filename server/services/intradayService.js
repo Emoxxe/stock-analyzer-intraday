@@ -376,7 +376,7 @@ class IntradayService {
         const marketRegime = await this.getMarketRegime();
 
         const results = [];
-        const chunkSize = 10;
+        const chunkSize = 25;
         for (let i = 0; i < symbols.length; i += chunkSize) {
           const chunk = symbols.slice(i, i + chunkSize);
           const chunkResults = await Promise.allSettled(
