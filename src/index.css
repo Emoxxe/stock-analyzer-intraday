@@ -1,0 +1,332 @@
+/* ============================================================
+   STOCK ANALYZER — Design Tokens & Global Styles
+   Premium institutional dark theme with glassmorphism & depth.
+   ============================================================ */
+
+:root {
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+
+  /* Base surfaces — layered depth */
+  --bg: #07090C;
+  --bg-elevated: #0C0F14;
+  --surface: rgba(16, 20, 28, 0.75);
+  --surface-hover: rgba(22, 27, 36, 0.82);
+  --surface-active: #1B2028;
+  --surface-inset: #080A0E;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(14, 17, 24, 0.55);
+  --glass-bg-strong: rgba(14, 17, 24, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(255, 255, 255, 0.1);
+  --glass-blur: 16px;
+  --glass-blur-strong: 24px;
+
+  /* Borders — subtle with glow potential */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --border-focus: #3B82F6;
+
+  /* Text */
+  --text: #E8ECF1;
+  --text-secondary: #9BA3B2;
+  --text-muted: #5E6A7D;
+  --text-disabled: #3D4759;
+
+  /* Semantic — richer, more vibrant */
+  --positive: #16A34A;
+  --positive-strong: #34D672;
+  --positive-soft: rgba(34, 214, 114, 0.10);
+  --negative: #DC2626;
+  --negative-strong: #FF6B6B;
+  --negative-soft: rgba(255, 107, 107, 0.10);
+  --warning: #D97706;
+  --warning-strong: #FBBF24;
+  --warning-soft: rgba(251, 191, 36, 0.10);
+  --info: #3B82F6;
+  --info-strong: #60A5FA;
+  --info-soft: rgba(59, 130, 246, 0.10);
+  --accent: #6366F1;
+  --accent-strong: #818CF8;
+
+  /* Glow effects */
+  --glow-green: 0 0 20px rgba(34, 214, 114, 0.15), 0 0 60px rgba(34, 214, 114, 0.05);
+  --glow-green-strong: 0 0 20px rgba(34, 214, 114, 0.25), 0 0 80px rgba(34, 214, 114, 0.08);
+  --glow-amber: 0 0 20px rgba(251, 191, 36, 0.15), 0 0 60px rgba(251, 191, 36, 0.05);
+  --glow-blue: 0 0 20px rgba(99, 102, 241, 0.2), 0 0 60px rgba(99, 102, 241, 0.06);
+  --glow-red: 0 0 20px rgba(255, 107, 107, 0.15), 0 0 60px rgba(255, 107, 107, 0.05);
+
+  /* Spacing scale */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+  --s12: 48px;
+  --s16: 64px;
+
+  /* Radii — more generous for premium feel */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 9999px;
+
+  /* Motion — springy */
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+  --dur-spring: 500ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Typographic scale */
+  --fs-hero: 28px;
+  --fs-h1: 22px;
+  --fs-h2: 17px;
+  --fs-h3: 15px;
+  --fs-body: 13px;
+  --fs-small: 12px;
+  --fs-label: 11px;
+  --fs-micro: 10px;
+
+  /* Numbers */
+  --num-strong: 15px;
+  --num: 13px;
+  --num-small: 12px;
+
+  /* Header / layout */
+  --header-height: 56px;
+  --content-max: 1420px;
+
+  /* Shadows — layered for depth */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-pop: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-overlay: 0 24px 64px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Keep legacy CSS variables as aliases so existing inline styles degrade gracefully */
+:root {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-bull: var(--positive);
+  --color-bear: var(--negative);
+  --color-gold: var(--warning);
+  --color-cyan: var(--info);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-color: var(--border-strong) var(--bg);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Ambient gradient mesh background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(34, 214, 114, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+  animation: ambientShift 25s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ambientShift {
+  0% { opacity: 1; filter: hue-rotate(0deg); }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; filter: hue-rotate(15deg); }
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-pill);
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.25);
+  color: var(--text);
+}
+
+/* ---------- Typography helpers ---------- */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ---------- Focus visibility ---------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Skeleton shimmer ---------- */
+@keyframes skeletonPulse {
+  0% { opacity: 0.45; }
+  50% { opacity: 0.75; }
+  100% { opacity: 0.45; }
+}
+
+.skeleton {
+  background: var(--surface-active);
+  border-radius: var(--r-sm);
+  animation: skeletonPulse 1.6s var(--ease) infinite;
+}
+
+/* ---------- Card entrance — staggered ---------- */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ---------- Entry fade for content ---------- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeInUp var(--dur-base) var(--ease);
+}
+
+/* ---------- Modal pop ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- Pulse glow for ENTER cards ---------- */
+@keyframes pulseGlowGreen {
+  0%, 100% { box-shadow: 0 0 15px rgba(34, 214, 114, 0.12), 0 0 40px rgba(34, 214, 114, 0.04), var(--shadow-card); }
+  50% { box-shadow: 0 0 25px rgba(34, 214, 114, 0.22), 0 0 60px rgba(34, 214, 114, 0.08), var(--shadow-card); }
+}
+
+@keyframes pulseGlowAmber {
+  0%, 100% { box-shadow: 0 0 15px rgba(251, 191, 36, 0.10), 0 0 40px rgba(251, 191, 36, 0.03), var(--shadow-card); }
+  50% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.18), 0 0 60px rgba(251, 191, 36, 0.06), var(--shadow-card); }
+}
+
+/* ---------- Drawer slide-in ---------- */
+@keyframes drawerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to { opacity: 1; backdrop-filter: blur(4px); }
+}
+
+/* ---------- Shimmer sweep for light reflection ---------- */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%) rotate(15deg); }
+  100% { transform: translateX(200%) rotate(15deg); }
+}
+
+/* ---------- Dot pulse ---------- */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ---------- Gradient text utility ---------- */
+.gradient-text {
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent-strong) 50%, var(--positive-strong) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

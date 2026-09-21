@@ -1,0 +1,129 @@
+/* ============================================================
+   Navbar — Premium glassmorphism header
+   ============================================================ */
+
+/* Pulse animation for market open dot */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Active tab indicator slide */
+@keyframes navTabIn {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+/* Brand glow pulse on hover */
+@keyframes brandGlow {
+  0%, 100% { box-shadow: 0 0 16px rgba(99, 102, 241, 0.25); }
+  50% { box-shadow: 0 0 28px rgba(99, 102, 241, 0.5); }
+}
+
+/* Legacy class-based styles (kept for backward compat) */
+.stock-nav {
+  background: var(--glass-bg-strong);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  height: var(--header-height);
+}
+
+.stock-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 var(--s6);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #4338CA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+  transition: box-shadow var(--dur-base) var(--ease);
+}
+
+.nav-logo-icon:hover {
+  animation: brandGlow 1.5s var(--ease) infinite;
+}
+
+.nav-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.nav-subtitle {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.nav-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all var(--dur-fast) var(--ease);
+}
+
+.nav-status-badge.is-open {
+  color: var(--positive-strong);
+  background: var(--positive-soft);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  box-shadow: var(--glow-green);
+}
+
+.nav-status-badge.is-closed {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--positive-strong);
+  box-shadow: 0 0 0 3px var(--positive-soft);
+  animation: pulseDot 2s var(--ease) infinite;
+}
+
+.live-dot.is-closed {
+  background: var(--text-disabled);
+  box-shadow: none;
+  animation: none;
+}
