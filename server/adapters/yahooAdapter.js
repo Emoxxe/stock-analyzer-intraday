@@ -27,47 +27,55 @@ class YahooAdapter {
       return { cookie: this.cookie, crumb: this.crumb };
     }
 
-    try {
-      // 1. Get Cookie from fc.yahoo.com
-      const cookieRes = await fetch('https://fc.yahoo.com', {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        },
-        redirect: 'manual',
-      });
+    if (this.crumbPromise) return this.crumbPromise;
 
-      const setCookieHeader = cookieRes.headers.get('set-cookie');
-      if (setCookieHeader) {
-        this.cookie = setCookieHeader.split(';')[0];
-      }
+    this.crumbPromise = (async () => {
+      try {
+        // 1. Get Cookie from fc.yahoo.com
+        const cookieRes = await fetch('https://fc.yahoo.com', {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          },
+          redirect: 'manual',
+        });
 
-      // 2. Get Crumb
-      const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-        'Accept': '*/*',
-      };
-      if (this.cookie) {
-        headers['Cookie'] = this.cookie;
-      }
-
-      const crumbRes = await fetch('https://query1.finance.yahoo.com/v1/test/getcrumb', {
-        headers,
-      });
-
-      if (crumbRes.ok) {
-        const crumbText = await crumbRes.text();
-        if (crumbText && !crumbText.includes('<html') && crumbText.length < 100) {
-          this.crumb = crumbText.trim();
-          this.cookieExpiry = now + 12 * 60 * 60 * 1000; // 12 hours
-          return { cookie: this.cookie, crumb: this.crumb };
+        const setCookieHeader = cookieRes.headers.get('set-cookie');
+        if (setCookieHeader) {
+          this.cookie = setCookieHeader.split(';')[0];
         }
-      }
-    } catch (err) {
-      console.warn('[YahooAdapter] Crumb initialization notice:', err.message);
-    }
 
-    return { cookie: this.cookie, crumb: this.crumb };
+        // 2. Get Crumb
+        const headers = {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+          'Accept': '*/*',
+        };
+        if (this.cookie) {
+          headers['Cookie'] = this.cookie;
+        }
+
+        const crumbRes = await fetch('https://query1.finance.yahoo.com/v1/test/getcrumb', {
+          headers,
+        });
+
+        if (crumbRes.ok) {
+          const crumbText = await crumbRes.text();
+          if (crumbText && !crumbText.includes('<html') && crumbText.length < 100) {
+            this.crumb = crumbText.trim();
+            this.cookieExpiry = now + 12 * 60 * 60 * 1000; // 12 hours
+            return { cookie: this.cookie, crumb: this.crumb };
+          }
+        }
+      } catch (err) {
+        console.warn('[YahooAdapter] Crumb initialization notice:', err.message);
+      } finally {
+        this.crumbPromise = null;
+      }
+
+      return { cookie: this.cookie, crumb: this.crumb };
+    })();
+
+    return this.crumbPromise;
   }
 
   /**
@@ -108,6 +116,12 @@ class YahooAdapter {
 
       if (!response.ok) {
         this.errorCount++;
+        if (response.status === 401 || response.status === 403) {
+          // Invalidate stale crumb/cookie on auth failure
+          this.crumb = null;
+          this.cookie = null;
+          this.cookieExpiry = 0;
+        }
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -321,6 +335,7 @@ class YahooAdapter {
         previousClose: q.regularMarketPreviousClose ?? q.chartPreviousClose ?? null,
         change: q.regularMarketChange ?? null,
         changePercent: q.regularMarketChangePercent ?? null,
+        volume: q.regularMarketVolume ?? 0,
         currency: q.currency || 'INR',
         marketState: q.marketState || null,
         marketTime: q.regularMarketTime ? new Date(q.regularMarketTime * 1000).toISOString() : null,

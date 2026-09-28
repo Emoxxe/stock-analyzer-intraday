@@ -28,10 +28,30 @@ export const cacheService = {
   set(key, data, ttlMs = DEFAULT_TTL_MS) {
     const entry = { data, expiry: Date.now() + ttlMs, timestamp: Date.now() };
     MEMORY_CACHE.set(key, entry);
+
+    // Skip storing large responses (e.g. detailed charts) in localStorage to preserve quota
     try {
-      localStorage.setItem(`stock_cache_${key}`, JSON.stringify(entry));
+      const serialized = JSON.stringify(entry);
+      if (serialized.length < 35000) {
+        localStorage.setItem(`stock_cache_${key}`, serialized);
+      }
     } catch {
-      // Ignore storage errors
+      // If quota exceeded, clean up stale stock_cache items
+      try {
+        const now = Date.now();
+        Object.keys(localStorage)
+          .filter(k => k.startsWith('stock_cache_'))
+          .forEach(k => {
+            try {
+              const item = JSON.parse(localStorage.getItem(k));
+              if (item?.expiry && now > item.expiry) localStorage.removeItem(k);
+            } catch {
+              localStorage.removeItem(k);
+            }
+          });
+      } catch {
+        // Ignore fallback cleanup errors
+      }
     }
   },
 

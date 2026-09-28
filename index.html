@@ -1,15 +1,109 @@
 <!doctype html>
-<html lang="en">
+<!--
+   ========================================================================
+   INDIAN STOCK & INTRADAY INTELLIGENCE TERMINAL
+   Engineered & Handcrafted by Sahil
+   Architecture: React 19 + Lightweight Charts + Node Express
+   Zero Synthetic Data - Verified NSE & BSE Telemetry
+   ========================================================================
+-->
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock & Crypto Market Analyzer | Real-Time Telemetry</title>
+    
+    <!-- Primary Page Metadata -->
+    <title>Stock &amp; Intraday Intelligence Terminal | Engineered by Sahil</title>
+    <meta name="title" content="Stock &amp; Intraday Intelligence Terminal | Engineered by Sahil" />
+    <meta name="description" content="Real-time Indian equity and intraday telemetry terminal for NSE &amp; BSE stocks. Handcrafted by Sahil featuring live VWAP, ORB scanners, market regime analysis, and zero fake data." />
+    <meta name="keywords" content="Stock Analyzer, Intraday Scanner, NSE India, BSE India, VWAP, Opening Range Breakout, NIFTY 50, Technical Analysis, Sahil, Stock Terminal" />
+    <meta name="author" content="Sahil" />
+    <meta name="creator" content="Sahil" />
+    <meta name="publisher" content="Sahil" />
+    <meta name="theme-color" content="#0b0f19" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://stock-analyzer-intraday.vercel.app/" />
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Author & Human Verification -->
+    <link rel="author" href="/humans.txt" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://stock-analyzer-intraday.vercel.app/" />
+    <meta property="og:site_name" content="Sahil's Stock Terminal" />
+    <meta property="og:title" content="Stock &amp; Intraday Intelligence Terminal | Engineered by Sahil" />
+    <meta property="og:description" content="Real-time Indian equity and intraday telemetry terminal for NSE &amp; BSE stocks. Handcrafted by Sahil with live VWAP, ORB scanners, and verified market telemetry." />
+    <meta property="og:image" content="https://stock-analyzer-intraday.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sahil Stock Terminal Dashboard Preview" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://stock-analyzer-intraday.vercel.app/" />
+    <meta name="twitter:title" content="Stock &amp; Intraday Intelligence Terminal | Engineered by Sahil" />
+    <meta name="twitter:description" content="Real-time Indian equity and intraday telemetry terminal for NSE &amp; BSE stocks. Handcrafted by Sahil with live VWAP and ORB scanners." />
+    <meta name="twitter:image" content="https://stock-analyzer-intraday.vercel.app/og-image.png" />
+    <meta name="twitter:creator" content="@sahil" />
+
+    <!-- Preconnect Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data (JSON-LD) for Search Engines & AI Crawlers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://stock-analyzer-intraday.vercel.app/#app",
+          "name": "Indian Stock & Intraday Intelligence Terminal",
+          "url": "https://stock-analyzer-intraday.vercel.app/",
+          "description": "Real-time Indian equity and intraday telemetry terminal for NSE & BSE stocks. Handcrafted by Sahil.",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "All",
+          "author": {
+            "@type": "Person",
+            "name": "Sahil",
+            "url": "https://stock-analyzer-intraday.vercel.app/humans.txt"
+          },
+          "creator": {
+            "@type": "Person",
+            "name": "Sahil"
+          },
+          "screenshot": "https://stock-analyzer-intraday.vercel.app/og-image.png"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://stock-analyzer-intraday.vercel.app/#website",
+          "url": "https://stock-analyzer-intraday.vercel.app/",
+          "name": "Stock & Intraday Terminal",
+          "publisher": {
+            "@type": "Person",
+            "name": "Sahil"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; color: #fff; background: #0b0f19; font-family: sans-serif;">
+        <h2>JavaScript Required</h2>
+        <p>This stock terminal requires JavaScript to render real-time charts and telemetry.</p>
+        <p>Engineered with pride by Sahil.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

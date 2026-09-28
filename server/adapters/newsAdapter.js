@@ -61,8 +61,9 @@ class NewsAdapter {
 
         // Clean headline
         let headline = item.title || 'Market Update';
-        if (headline.includes(' - ') && publisher) {
-          headline = headline.replace(new RegExp(` - ${publisher}$`), '').trim();
+        const suffix = ` - ${publisher}`;
+        if (publisher && headline.endsWith(suffix)) {
+          headline = headline.slice(0, -suffix.length).trim();
         }
 
         return {

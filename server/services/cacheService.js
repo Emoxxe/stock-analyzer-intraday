@@ -40,6 +40,21 @@ class CacheService {
 
   set(key, data, ttlSeconds = 60, metadata = {}) {
     const now = Date.now();
+    const maxEntries = 500;
+
+    // Prune expired or oldest entry if limit reached
+    if (this.cache.size >= maxEntries && !this.cache.has(key)) {
+      for (const [k, v] of this.cache.entries()) {
+        if (now > v.expiresAt) {
+          this.cache.delete(k);
+        }
+      }
+      if (this.cache.size >= maxEntries) {
+        const oldestKey = this.cache.keys().next().value;
+        if (oldestKey) this.cache.delete(oldestKey);
+      }
+    }
+
     this.cache.set(key, {
       data,
       cachedAt: new Date(now).toISOString(),

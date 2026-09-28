@@ -1,0 +1,9 @@
+# Robots.txt for Stock & Intraday Intelligence Terminal
+# Handcrafted by Sahil - https://stock-analyzer-intraday.vercel.app
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://stock-analyzer-intraday.vercel.app/sitemap.xml

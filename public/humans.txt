@@ -1,0 +1,25 @@
+/* TEAM */
+  Developer & Lead Architect: Sahil
+  Role: Creator, Systems Engineer & Quantitative Analyst
+  Contact: sahil@users.noreply.github.com
+  GitHub: https://github.com/Emoxxe
+  Portfolio: https://stock-analyzer-intraday.vercel.app
+  Location: India
+
+/* ABOUT THIS PROJECT */
+  Product: Indian Stock & Intraday Intelligence Terminal
+  Philosophy: 100% Handcrafted engineering. Zero synthetic or fake financial telemetry.
+  Architecture: Custom client-server reactive model with TradingView Lightweight Charts, real-time VWAP and ORB scanner.
+  Handcrafted with passion by Sahil.
+
+/* THANKS */
+  Open Source Financial Ecosystem
+  TradingView Lightweight Charts Team
+  React & Vite Community
+
+/* SITE */
+  Standards: HTML5, CSS3, ES2024, WebSockets / SSE Ready
+  Components: React 19, Vite, Lightweight Charts v5
+  Backend: Node.js, Express 5
+  IDE: Google Antigravity
+  Last Updated: September 2026

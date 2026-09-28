@@ -43,11 +43,16 @@ export default function CoverageAboutPage() {
     <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Overview Header */}
       <div style={{ backgroundColor: '#0f172a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '20px' }}>
-        <h1 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 700, color: '#f8fafc' }}>
-          Data Transparency, System Health & Security Master Coverage
-        </h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
+          <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#f8fafc' }}>
+            Data Transparency, System Health &amp; Security Master Coverage
+          </h1>
+          <span style={{ fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', background: 'rgba(99, 102, 241, 0.15)', color: 'var(--accent-strong)', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+            Engineered by Sahil
+          </span>
+        </div>
         <p style={{ margin: 0, fontSize: '13px', color: '#94a3b8', lineHeight: 1.5 }}>
-          Bharat Finance operates under a strict <strong>Zero Fake Data Guarantee</strong>. Every quote, index valuation, financial ratio, and corporate news item is sourced directly from authenticated external providers or calculated via deterministic mathematical formulas.
+          This terminal operates under a strict <strong>Zero Fake Data Guarantee</strong> personally instituted by <strong>Sahil</strong>. Every quote, index valuation, financial ratio, and corporate news item is sourced directly from authenticated external providers or calculated via deterministic mathematical formulas.
         </p>
       </div>
 
@@ -198,6 +203,32 @@ export default function CoverageAboutPage() {
 
           <div style={{ marginTop: '20px', padding: '12px', backgroundColor: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.2)', borderRadius: '8px', fontSize: '11px', color: '#94a3b8', lineHeight: 1.4 }}>
             🛡️ <strong>Zero Fake Data Rule:</strong> Synthetic random number generators, mock company records, and hardcoded financial metrics are strictly banned across this application. If a provider feed is missing or encounters a network error, the metric is explicitly marked as "Data unavailable".
+          </div>
+        </div>
+
+        {/* Lead Engineer & Standards */}
+        <div style={{ backgroundColor: '#0f172a', border: '1px solid rgba(99, 102, 241, 0.25)', borderRadius: '12px', padding: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: 8 }}>
+            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#f8fafc' }}>
+              Human Engineering &amp; Architectural Standards
+            </h3>
+            <span style={{ fontSize: '11px', color: 'var(--accent-strong)', fontWeight: 600, background: 'rgba(99, 102, 241, 0.15)', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+              Handcrafted by Sahil
+            </span>
+          </div>
+          <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px' }}>
+            This terminal was custom-architected and engineered line-by-line by <strong>Sahil</strong>. It rejects automated site-builder boilerplate in favor of hand-tuned React 19 performance, institutional-grade canvas rendering via Lightweight Charts, and mathematical determinism.
+          </p>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '12px' }}>
+            <a href="/humans.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-strong)', textDecoration: 'none' }}>
+              View humans.txt Credits &rarr;
+            </a>
+            <a href="/llm.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-strong)', textDecoration: 'none' }}>
+              View llm.txt Manifest &rarr;
+            </a>
+            <a href="/.well-known/security.txt" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-strong)', textDecoration: 'none' }}>
+              Security Disclosure &rarr;
+            </a>
           </div>
         </div>
       </div>

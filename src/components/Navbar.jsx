@@ -110,9 +110,26 @@ export default function Navbar() {
             ▲
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <span style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', display: 'block' }}>
-              StockAnalyzer
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', display: 'block' }}>
+                StockAnalyzer
+              </span>
+              <span
+                style={{
+                  fontSize: '9.5px',
+                  fontWeight: 700,
+                  padding: '1px 5px',
+                  borderRadius: '3px',
+                  background: 'rgba(99, 102, 241, 0.15)',
+                  color: 'var(--accent-strong)',
+                  border: '1px solid rgba(99, 102, 241, 0.3)',
+                  letterSpacing: '0.02em',
+                }}
+                title="Engineered & Handcrafted by Sahil"
+              >
+                by Sahil
+              </span>
+            </div>
             <span style={{ fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>
               NSE · BSE · India
             </span>
@@ -200,8 +217,42 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right cluster: market status + clock */}
+        {/* Right cluster: market status + clock + author credit */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s4)', flexShrink: 0 }}>
+          <a
+            href="/humans.txt"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Handcrafted by Sahil • Click to view team & standards"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '4px 9px',
+              borderRadius: 'var(--r-md)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid var(--glass-border)',
+              color: 'var(--text-muted)',
+              fontSize: '11px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              transition: 'all var(--dur-fast) var(--ease)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent)';
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.background = 'rgba(99, 102, 241, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--glass-border)';
+              e.currentTarget.style.color = 'var(--text-muted)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-strong)' }} />
+            <span>Sahil</span>
+          </a>
+
           <span
             style={{
               ...tagStyle,

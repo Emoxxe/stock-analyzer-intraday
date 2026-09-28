@@ -217,6 +217,21 @@ export default function InteractiveStockChart({ symbol = 'RELIANCE', currentPric
               </linearGradient>
             </defs>
 
+            {/* Subtle Chart Watermark */}
+            <text
+              x={PADDING.left + 12}
+              y={PADDING.top + 22}
+              fill="rgba(255, 255, 255, 0.08)"
+              fontSize="11"
+              fontFamily="var(--font-mono, monospace)"
+              fontWeight="700"
+              letterSpacing="0.08em"
+              pointerEvents="none"
+              userSelect="none"
+            >
+              SAHIL TERMINAL · {symbol}
+            </text>
+
             {/* grid */}
             {[0, 0.25, 0.5, 0.75, 1].map((r, i) => {
               const y = PADDING.top + r * priceH;

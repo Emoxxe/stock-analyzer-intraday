@@ -59,3 +59,19 @@ export async function getSystemCoverage() {
   }
   return res.json();
 }
+
+export async function getIntradayScan(universe = 'NIFTY50') {
+  const res = await fetch(`/api/intraday/scan?universe=${encodeURIComponent(universe)}`, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch intraday scan (HTTP ${res.status})`);
+  }
+  return res.json();
+}
+
+export async function getIntradayStock(symbol) {
+  const res = await fetch(`/api/intraday/stock/${encodeURIComponent(symbol)}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch intraday analysis for ${symbol} (HTTP ${res.status})`);
+  }
+  return res.json();
+}

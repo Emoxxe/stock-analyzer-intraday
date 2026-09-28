@@ -49,8 +49,6 @@ app.use((req, res, next) => {
     urlObj.searchParams.delete('__path');
     const search = urlObj.search;
     req.url = '/api/' + subpath + search;
-  } else if (!req.url.startsWith('/api')) {
-    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
   }
   next();
 });
@@ -85,8 +83,8 @@ app.use('/api', (req, res) => {
 if (!process.env.VERCEL) {
   app.use(express.static(distPath));
 
-  // Single Page Application (SPA) fallback to index.html
-  app.get('*', (req, res) => {
+  // Single Page Application (SPA) fallback to index.html (Express 5 syntax)
+  app.get('/*splat', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }

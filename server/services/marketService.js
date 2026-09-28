@@ -107,37 +107,30 @@ class MarketService {
     const cached = cacheService.get(cacheKey);
     if (cached) return cached.data;
 
-    const quotes = await Promise.allSettled(
-      symbols.map(async (sym) => {
-        try {
-          const chart = await yahooAdapter.getChart(sym, '1d', '5m');
-          const lastPoint = chart.points?.[chart.points.length - 1];
-          const prevClose = chart.previousClose;
-          const current = lastPoint ? lastPoint.close : chart.regularMarketPrice;
+    let quoteMap = {};
+    try {
+      quoteMap = await yahooAdapter.getQuotes(symbols);
+    } catch (err) {
+      console.warn('[MarketService] Batch getQuotes error in getMovers:', err.message);
+    }
 
-          const change = current !== null && prevClose !== null ? current - prevClose : null;
-          const changePercent = current !== null && prevClose && prevClose !== 0 ? (change / prevClose) * 100 : null;
+    const validQuotes = symbols.map((sym) => {
+      const clean = sym.replace(/\.(NS|BO)$/i, '');
+      const q = quoteMap[clean] || quoteMap[sym];
+      if (!q || q.price == null || q.changePercent == null) return null;
 
-          return {
-            symbol: sym.replace('.NS', ''),
-            fullSymbol: sym,
-            price: current,
-            change,
-            changePercent,
-            volume: lastPoint?.volume || 0,
-            source: chart.source,
-            providerTimestamp: chart.providerTimestamp,
-            quality: current !== null ? 'AVAILABLE' : 'UNAVAILABLE',
-          };
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    const validQuotes = quotes
-      .map(q => q.status === 'fulfilled' ? q.value : null)
-      .filter(q => q && q.price !== null && q.changePercent !== null);
+      return {
+        symbol: clean,
+        fullSymbol: sym,
+        price: q.price,
+        change: q.change,
+        changePercent: q.changePercent,
+        volume: q.volume || 0,
+        source: q.source,
+        providerTimestamp: q.marketTime,
+        quality: 'AVAILABLE',
+      };
+    }).filter(Boolean);
 
     // Sort Gainers (descending changePercent)
     const gainers = [...validQuotes]

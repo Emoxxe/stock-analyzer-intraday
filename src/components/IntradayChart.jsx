@@ -147,6 +147,25 @@ export default function IntradayChart({ symbol, vwap, openingRangeHigh, openingR
 
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: '300px', marginTop: '1rem', marginBottom: '1rem' }}>
+      {/* Subtle Chart Watermark */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 56,
+          pointerEvents: 'none',
+          fontSize: '9.5px',
+          fontWeight: 600,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          color: 'rgba(255, 255, 255, 0.14)',
+          userSelect: 'none',
+          fontFamily: 'var(--font-mono, monospace)',
+          zIndex: 2,
+        }}
+      >
+        ✦ Sahil Engine
+      </div>
       {loading && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>Loading chart...</div>}
       {error && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>{error}</div>}
       <div ref={chartContainerRef} style={{ width: '100%', height: '100%' }} />

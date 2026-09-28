@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import IntradayChart from '../components/IntradayChart';
+import { getIntradayScan } from '../services/stockApi';
 import './IntradayPage.css';
 
 const formatINR = (n) => n == null ? '—' : `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
@@ -58,45 +59,51 @@ export default function IntradayPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [lastRefresh, setLastRefresh] = useState(null);
-  const [countdown, setCountdown] = useState(20);
   const [riskBudget, setRiskBudget] = useState(1000);
   const prevActionableRef = useRef([]);
 
   // Request notification permissions
   useEffect(() => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
+    try {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {});
+      }
+    } catch {
+      // Ignore notification setup issues
     }
   }, []);
 
   const load = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
     try {
-      const res = await fetch(`/api/intraday/scan?universe=${encodeURIComponent(universe)}`, { cache: 'no-store' });
-      const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.error || 'Intraday scan failed');
+      const json = await getIntradayScan(universe);
+      if (!json.success) throw new Error(json.error || 'Intraday scan failed');
       
       const newData = json.data;
       
       // Check for new ENTER states
-      if ('Notification' in window && Notification.permission === 'granted') {
-        const newEnterSymbols = newData?.actionable
-          ?.filter(row => row.plan.status === 'ENTER')
-          ?.map(row => row.symbol) || [];
-          
-        const oldEnterSymbols = prevActionableRef.current
-          ?.filter(row => row.plan.status === 'ENTER')
-          ?.map(row => row.symbol) || [];
+      try {
+        if ('Notification' in window && Notification.permission === 'granted') {
+          const newEnterSymbols = newData?.actionable
+            ?.filter(row => row.plan.status === 'ENTER')
+            ?.map(row => row.symbol) || [];
+            
+          const oldEnterSymbols = prevActionableRef.current
+            ?.filter(row => row.plan.status === 'ENTER')
+            ?.map(row => row.symbol) || [];
 
-        const newlyEntered = newEnterSymbols.filter(sym => !oldEnterSymbols.includes(sym));
-        
-        newlyEntered.forEach(sym => {
-          const row = newData.actionable.find(r => r.symbol === sym);
-          new Notification(`Trade Alert: ${sym} (${row.plan.direction})`, {
-            body: `${row.plan.setup.replaceAll('_', ' ')} detected. Entry near ${formatINR(row.plan.entry)}.`,
-            icon: '/vite.svg'
+          const newlyEntered = newEnterSymbols.filter(sym => !oldEnterSymbols.includes(sym));
+          
+          newlyEntered.forEach(sym => {
+            const row = newData.actionable.find(r => r.symbol === sym);
+            new Notification(`Trade Alert: ${sym} (${row.plan.direction})`, {
+              body: `${row.plan.setup.replaceAll('_', ' ')} detected. Entry near ${formatINR(row.plan.entry)}.`,
+              icon: '/vite.svg'
+            });
           });
-        });
+        }
+      } catch {
+        // Ignore notification trigger failures
       }
       
       prevActionableRef.current = newData?.actionable || [];
@@ -128,10 +135,14 @@ export default function IntradayPage() {
       <div className="intraday-wrap">
         <header className="intraday-header">
           <div>
-            <div className="eyebrow">INTRADAY DESK · NSE EQUITIES</div>
+            <div className="eyebrow" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>INTRADAY DESK · NSE EQUITIES</span>
+              <span style={{ color: 'var(--accent-strong)', opacity: 0.6 }}>·</span>
+              <span style={{ color: 'var(--accent-strong)', fontWeight: 700 }}>HANDCRAFTED BY SAHIL</span>
+            </div>
             <h1>Find the trade, then wait for the trigger.</h1>
             <p>
-              A rules-based scanner that ranks live intraday setups using opening range, VWAP,
+              A rules-based scanner handcrafted by <b>Sahil</b> that ranks live intraday setups using opening range, VWAP,
               momentum, volume and NIFTY regime. <b>ENTER</b> means the conditions are currently aligned;
               it is not a prediction or guarantee.
             </p>
@@ -324,6 +335,10 @@ export default function IntradayPage() {
               <Metric label="RVOL" value={selectedRow.relativeVolume ? `${selectedRow.relativeVolume}×` : '—'} />
             </div>
             <Link className="company-link" to={`/company/${selectedRow.symbol}`}>Open full stock analysis →</Link>
+            <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10.5px', color: 'var(--text-disabled)' }}>
+              <span>Intraday Telemetry</span>
+              <span style={{ color: 'var(--text-muted)' }}>Engineered by Sahil</span>
+            </div>
           </aside>
         </div>
       )}

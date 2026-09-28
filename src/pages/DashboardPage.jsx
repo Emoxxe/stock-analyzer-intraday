@@ -44,13 +44,32 @@ export default function DashboardPage() {
       {/* Page header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
         <div>
-          <h1 className="gradient-text" style={{ fontSize: 'var(--fs-h1)', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>
-            Indian Markets
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <h1 className="gradient-text" style={{ fontSize: 'var(--fs-h1)', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>
+              Indian Markets
+            </h1>
+            <span
+              style={{
+                fontSize: '10.5px',
+                fontWeight: 600,
+                padding: '2px 8px',
+                borderRadius: '6px',
+                background: 'rgba(99, 102, 241, 0.12)',
+                color: 'var(--accent-strong)',
+                border: '1px solid rgba(99, 102, 241, 0.25)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+              title="Handcrafted trading architecture by Sahil"
+            >
+              ✦ Sahil&apos;s Terminal
+            </span>
+          </div>
           <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text-muted)', margin: '4px 0 0' }}>
             {status?.istTime
               ? `As of ${status.istTime} IST · ${status.isOpen ? 'Session open' : 'Session closed'}`
-              : 'Live delayed quote snapshots from NSE & BSE'}
+              : 'Live delayed quote snapshots from NSE & BSE'} · Handcrafted with zero fake data by Sahil
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -233,6 +252,20 @@ export default function DashboardPage() {
                   <span className="mono" style={{ fontSize: 11, color: 'var(--info)', whiteSpace: 'nowrap' }}>Open →</span>
                 </Link>
               ))}
+            </div>
+            <div
+              style={{
+                padding: '8px var(--s4)',
+                borderTop: '1px solid var(--glass-border)',
+                fontSize: '11px',
+                color: 'var(--text-disabled)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <span>Watchlist Telemetry</span>
+              <span style={{ color: 'var(--text-muted)' }}>Engineered by Sahil</span>
             </div>
           </div>
         </div>

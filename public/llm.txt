@@ -1,0 +1,18 @@
+# Stock & Intraday Intelligence Terminal
+> Built and engineered by Sahil. High-performance real-data Indian stock analytics and intraday momentum scanner.
+
+## Primary Information
+- **Domain**: https://stock-analyzer-intraday.vercel.app
+- **Creator & Lead Engineer**: Sahil
+- **Markets Covered**: National Stock Exchange of India (NSE) & Bombay Stock Exchange (BSE)
+- **Primary Capabilities**:
+  - Live Intraday Scanners: Opening Range Breakout (ORB), VWAP Pullbacks, RVOL spikes, and 9/20 EMA crossovers.
+  - Candlestick Charting: Canvas-accelerated Lightweight Charts v5 with multi-timeframe analytics.
+  - Market Hours Engine: Live tracking of Indian market trading sessions (Pre-open, Regular, Post-close).
+  - Provenance & Data Integrity: Disclosed data sources and latency stamps with zero synthetic data.
+
+## Documentation & Standards
+- [Humans Credit](https://stock-analyzer-intraday.vercel.app/humans.txt): Team and human engineer credits
+- [Terms of Service](https://stock-analyzer-intraday.vercel.app/terms): Terms, usage policies, and financial risk disclaimers
+- [Privacy Policy](https://stock-analyzer-intraday.vercel.app/privacy): Zero tracker policy and client-side storage architecture
+- [Security Disclosure](https://stock-analyzer-intraday.vercel.app/security): Security vulnerability reporting

@@ -13,7 +13,7 @@ const SCAN_UNIVERSES = {
   NIFTY50: [
     'RELIANCE', 'TCS', 'INFY', 'HDFCBANK', 'ICICIBANK', 'SBIN', 'BHARTIARTL', 'TMCV', 'ADANIENT', 'LT',
     'ITC', 'HINDUNILVR', 'SUNPHARMA', 'TATASTEEL', 'BAJFINANCE', 'MARUTI', 'KOTAKBANK', 'AXISBANK', 'M&M', 'NTPC',
-    'TITAN', 'ULTRACEMCO', 'BAJAJFINSV', 'ASIANPAINT', 'POWERGRID', 'COALINDIA', 'TATAMOTORS', 'HCLTECH', 'ONGC', 'WIPRO',
+    'TITAN', 'ULTRACEMCO', 'BAJAJFINSV', 'ASIANPAINT', 'POWERGRID', 'COALINDIA', 'SHRIRAMFIN', 'HCLTECH', 'ONGC', 'WIPRO',
     'JSWSTEEL', 'BRITANNIA', 'HEROMOTOCO', 'HINDALCO', 'GRASIM', 'TECHM', 'EICHERMOT', 'CIPLA', 'BAJAJ-AUTO', 'APOLLOHOSP',
     'BPCL', 'TATACONSUM', 'DRREDDY', 'DIVISLAB', 'INDUSINDBK', 'ADANIPORTS', 'NESTLEIND', 'LTIM', 'UPL', 'SBILIFE'
   ]
@@ -109,9 +109,10 @@ class IntradayService {
     try {
       const chart = await yahooAdapter.getChart(MARKET_INDEX, '5d', '5m');
       const all = (chart.points || []).filter(isTradingPoint);
-      const today = all.filter(p => sameISTDate(p.timestamp, Date.now()));
-      const points = today.length ? today : all.slice(-78);
-      if (points.length < 10) return { regime: 'UNKNOWN', score: 50, index: null };
+      const latestTs = all.at(-1)?.timestamp || Date.now();
+      const today = all.filter(p => sameISTDate(p.timestamp, latestTs));
+      const points = today.length >= 10 ? today : (all.length >= 10 ? all.slice(-Math.min(78, all.length)) : today);
+      if (points.length < 5) return { regime: 'UNKNOWN', score: 50, index: null };
 
       const closes = points.map(p => p.close);
       const ema9 = this.calculateEMA(closes, 9);
@@ -174,10 +175,11 @@ class IntradayService {
 
       const vwapSeries = this.calculateVWAP(today);
       const vwap = vwapSeries.at(-1);
-      const closes = today.map(p => p.close);
-      const ema9 = this.calculateEMA(closes, 9);
-      const ema20 = this.calculateEMA(closes, 20);
-      const rsi = this.calculateRSI(closes);
+      // Use continuous multi-day 5m series so EMA and RSI are available at market open
+      const allCloses = all.map(p => p.close);
+      const ema9 = this.calculateEMA(allCloses, 9);
+      const ema20 = this.calculateEMA(allCloses, 20);
+      const rsi = this.calculateRSI(allCloses, 14);
       const atr = this.calculateATR(all, 14) || Math.max(currentPrice * 0.004, 0.05);
 
       const dayHigh = Math.max(...today.map(p => p.high));
@@ -280,6 +282,7 @@ class IntradayService {
         status = 'WATCH';
         entry = openingRangeHigh + buffer;
         stop = Math.max(vwap, openingRangeHigh - atr * 0.65);
+        if (stop >= entry) stop = entry - Math.max(atr * 0.65, currentPrice * 0.002);
         const risk = Math.max(entry - stop, atr * 0.5);
         target1 = entry + risk * 2;
         target2 = entry + risk * 3;
@@ -289,6 +292,7 @@ class IntradayService {
         status = 'WATCH';
         entry = openingRangeLow - buffer;
         stop = Math.min(vwap, openingRangeLow + atr * 0.65);
+        if (stop <= entry) stop = entry + Math.max(atr * 0.65, currentPrice * 0.002);
         const risk = Math.max(stop - entry, atr * 0.5);
         target1 = entry - risk * 2;
         target2 = entry - risk * 3;
@@ -376,13 +380,16 @@ class IntradayService {
         const marketRegime = await this.getMarketRegime();
 
         const results = [];
-        const chunkSize = 25;
+        const chunkSize = 10;
         for (let i = 0; i < symbols.length; i += chunkSize) {
           const chunk = symbols.slice(i, i + chunkSize);
           const chunkResults = await Promise.allSettled(
             chunk.map(sym => this.analyzeStock(`${sym}.NS`, marketRegime))
           );
           results.push(...chunkResults);
+          if (i + chunkSize < symbols.length) {
+            await new Promise(r => setTimeout(r, 120));
+          }
         }
 
         const setups = results

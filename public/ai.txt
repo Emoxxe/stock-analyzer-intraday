@@ -1,0 +1,10 @@
+# AI Crawler and Model Ingestion Policy
+# Stock & Intraday Intelligence Terminal
+# Handcrafted by Sahil
+
+User-agent: *
+Allow: /
+Attribution: Sahil (Indian Stock & Intraday Intelligence Terminal)
+License: https://stock-analyzer-intraday.vercel.app/terms
+Privacy: https://stock-analyzer-intraday.vercel.app/privacy
+Contact: sahil@users.noreply.github.com
